@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+/* Container */
+.container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+}
+
+/* Heading */
+h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Message */
+h3 {
+    color: #d8000c;
+    background-color: #ffdddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Quiz Question */
+p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Radio Options */
+input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+label {
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Button */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Score */
+.score {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+    </style>
+</head>
+<body>
+    <h2>Quiz Question</h2>
+
+    {% if message %}
+        <h3>{{ message }}</h3>
+    {% endif %}
+
+    <form method="post" action="{% url 'check_answer' %}">
+        {% csrf_token %}
+        <input type="hidden" name="question_id" value="{{ question.id }}">
+
+        <p>{{ question.text }}</p>
+
+        <input type="radio" name="selected_option" value="{{ question.option1 }}" required> {{ question.option1 }}<br>
+        <input type="radio" name="selected_option" value="{{ question.option2 }}"> {{ question.option2 }}<br>
+        <input type="radio" name="selected_option" value="{{ question.option3 }}"> {{ question.option3 }}<br>
+        <input type="radio" name="selected_option" value="{{ question.option4 }}"> {{ question.option4 }}<br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <button><a href="/login/leaderboard/">Leaderboard</a></button>
+
+    <p>Current Score: {{ request.session.score }}</p>
+</body>
+</html>
